@@ -3,6 +3,7 @@ package tools.dslr.hdcamera;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Handler;
 import androidx.core.content.ContextCompat;
@@ -17,19 +18,23 @@ import com.ebanx.swipebtn.OnActiveListener;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
 
+import tools.dslr.hdcamera.UI.location.LocationServiceManager;
+
 public class MainScreenActivity extends AppCompatActivity {
 
     LinearLayout llprivacy, rateus;
     Context context;
     boolean doubleBackToExitPressedOnce = false;
+    private LocationServiceManager locationServiceManager = null;
 
-
+    private Location location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_main);
         context = this;
-
+//        locationServiceManager = new LocationServiceManager(this);
+//        location = locationServiceManager.getLocation();
         llprivacy = findViewById(R.id.llprivacy);
         llprivacy.setOnClickListener(new View.OnClickListener() {
             @Override

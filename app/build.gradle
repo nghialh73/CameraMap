@@ -46,6 +46,8 @@ dependencies {
     //noinspection UseOfBundledGooglePlayServices
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.ebanx:swipe-button:0.8.3'
+    implementation 'com.google.android.gms:play-services-maps:11.4.2'
+    implementation 'com.google.android.gms:play-services-location:11.4.2'
     //noinspection GradleDependency
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

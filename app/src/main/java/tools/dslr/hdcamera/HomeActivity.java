@@ -1,23 +1,26 @@
 package tools.dslr.hdcamera;
 
-import tools.dslr.hdcamera.CameraController.Controller;
-import tools.dslr.hdcamera.CameraController.ControllerManager2;
-import tools.dslr.hdcamera.Preview.Preview;
-import tools.dslr.hdcamera.UI.FolderChooserDialog;
-import tools.dslr.hdcamera.UI.MainUI;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.Manifest;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.KeyguardManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,6 +30,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.CamcorderProfile;
@@ -40,31 +44,11 @@ import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.KeyguardManager;
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.renderscript.RenderScript;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import androidx.core.app.ActivityCompat;
-
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.GestureDetector;
@@ -78,11 +62,32 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.ZoomControls;
 
-public class HomeActivity extends Activity implements AudioListener.AudioListenerCallback {
+import androidx.core.app.ActivityCompat;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
+import tools.dslr.hdcamera.CameraController.Controller;
+import tools.dslr.hdcamera.CameraController.ControllerManager2;
+import tools.dslr.hdcamera.Preview.Preview;
+import tools.dslr.hdcamera.UI.FolderChooserDialog;
+import tools.dslr.hdcamera.UI.MainUI;
+import tools.dslr.hdcamera.UI.location.LocationActivity;
+
+public class HomeActivity extends Activity implements AudioListener.AudioListenerCallback, LocationAddressListener {
 
     private static final String TAG = "HomeActivity";
     private SensorManager sensormanager = null;
@@ -134,7 +139,10 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
     public float angle = 0.0f;
     public String last_saved_image = null;
 
-
+    private TextView addressText;
+    private TextView latText;
+    private TextView lonText;
+    private TextView dateTimeText;
 
     int fbads;
     private Context con;
@@ -198,6 +206,7 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         // set up components
         mainui = new MainUI(this);
         applicationInterface = new MyApplicationInterface(this, savedInstanceState);
+        initLocation();
         if (Debug.LOG)
             Log.d(TAG, "onCreate: time after creating application interface: " + (System.currentTimeMillis() - debug_time));
 
@@ -283,6 +292,10 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         });
         if (Debug.LOG)
             Log.d(TAG, "onCreate: time after setting gallery long click listener: " + (System.currentTimeMillis() - debug_time));
+
+        //setup address view
+        getLocation();
+
 
         // listen for gestures
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
@@ -381,6 +394,25 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
 
         if (Debug.LOG)
             Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
+    }
+
+    void getLocation() {
+        Location location = getLocationSupplier().getLocation();
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
+        getLocationSupplier().getAddressFromLocation(lat, lon, this);
+    }
+
+    private void updateAddress(double lat, double lon, String address) {
+        addressText = findViewById(R.id.address);
+        latText = findViewById(R.id.lat);
+        lonText = findViewById(R.id.lon);
+        dateTimeText = findViewById(R.id.timezone);
+        latText.setText(lat + "\u00B0");
+        lonText.setText(lon + "\u00B0");
+        addressText.setText(address);
+        TimeZone tz = TimeZone.getDefault();
+        dateTimeText.setText(tz.getDisplayName(false, TimeZone.SHORT));
     }
 
     /**
@@ -783,7 +815,6 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         orientationEventListener.enable();
 
         initSpeechRecognizer();
-        initLocation();
         initSound();
         loadSound(R.raw.beep);
         loadSound(R.raw.beep_hi);
@@ -1439,7 +1470,17 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         g_bitmap = thumbnail;
     }
 
+
+    Bitmap getBitmapFromLayoutAddress() {
+        RelativeLayout layout = findViewById(R.id.location_layout);
+        layout.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(layout.getDrawingCache());
+        layout.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
     /**
+     * layout.setDrawingCacheEnabled(false);
      * Updates the gallery icon by searching for the most recent photo.
      * Launches the task in a separate thread.
      */
@@ -1553,6 +1594,13 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
                 galleryButton.setColorFilter(null);
             }
         });
+    }
+
+    public void clickedLocation(View view) {
+        if (Debug.LOG)
+            Log.d(TAG, "clickLocation");
+        Intent intent = new Intent(this, LocationActivity.class);
+        startActivity(intent);
     }
 
     public void clickedGallery(View view) {
@@ -1954,6 +2002,15 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         return screen_is_locked;
     }
 
+    @Override
+    public void getLocationAddress(double lat, double lon, String address) {
+        updateAddress(lat, lon, address);
+    }
+
+    @Override
+    public void getLocation(double lat, double lon) {
+        getLocationSupplier().getAddressFromLocation(lat, lon, this);
+    }
 
     /**
      * Listen for gestures.
@@ -2743,7 +2800,7 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
     private void initLocation() {
         if (Debug.LOG)
             Log.d(TAG, "initLocation");
-        if (!applicationInterface.getLocationSupplier().setupLocationListener()) {
+        if (!applicationInterface.getLocationSupplier().setupLocationListener(this)) {
             if (Debug.LOG)
                 Log.d(TAG, "location permission not available, so request permission");
             requestLocationPermission();

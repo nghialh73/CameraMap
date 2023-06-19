@@ -595,11 +595,11 @@ public class DrawPreview {
                     color = getAngleHighlightColor();
                     p.setUnderlineText(true);
                 }
-                String number_string = decimalFormat.format(level_angle);
-                number_string = number_string.replaceAll( "^-(?=0(.0*)?$)", ""); // avoids displaying "-0.0", see http://stackoverflow.com/questions/11929096/negative-sign-in-case-of-zero-in-java
-                String string = getContext().getResources().getString(R.string.angle) + ": " + number_string + (char)0x00B0;
-                applicationInterface.drawTextWithBackground(canvas, p, string, color, Color.BLACK, canvas.getWidth() / 2 + pixels_offset_x, text_base_y, false, ybounds_text, true);
-                p.setUnderlineText(false);
+                    String number_string = decimalFormat.format(level_angle);
+                    number_string = number_string.replaceAll( "^-(?=0(.0*)?$)", ""); // avoids displaying "-0.0", see http://stackoverflow.com/questions/11929096/negative-sign-in-case-of-zero-in-java
+                    String string = getContext().getResources().getString(R.string.angle) + ": " + number_string + (char)0x00B0;
+//                    applicationInterface.drawTextWithBackground(canvas, p, string, color, Color.BLACK, canvas.getWidth() / 2 + pixels_offset_x, text_base_y, false, ybounds_text, true);
+                    p.setUnderlineText(false);
             }
             if( draw_geo_direction ) {
                 int color = Color.WHITE;
@@ -793,7 +793,7 @@ public class DrawPreview {
             }
         }
 
-        boolean store_location = sharedPreferences.getBoolean(Keys.getLocationPreferenceKey(), false);
+        boolean store_location = sharedPreferences.getBoolean(Keys.getLocationPreferenceKey(), true);
         if( store_location ) {
             int location_x = (int) (20 * scale + 0.5f); // convert dps to pixels
             int location_y = top_y;
@@ -810,16 +810,16 @@ public class DrawPreview {
             }
             location_dest.set(location_x, location_y, location_x + location_size, location_y + location_size);
             if( applicationInterface.getLocation() != null ) {
-                canvas.drawBitmap(location_bitmap, null, location_dest, p);
+//                canvas.drawBitmap(location_bitmap, null, location_dest, p);
                 int location_radius = location_size/10;
                 int indicator_x = location_x + location_size;
                 int indicator_y = location_y + location_radius/2 + 1;
                 p.setStyle(Paint.Style.FILL);
                 p.setColor(applicationInterface.getLocation().getAccuracy() < 25.01f ? Color.rgb(37, 155, 36) : Color.rgb(255, 235, 59)); // Green 500 or Yellow 500
-                canvas.drawCircle(indicator_x, indicator_y, location_radius, p);
+//                canvas.drawCircle(indicator_x, indicator_y, location_radius, p);
             }
             else {
-                canvas.drawBitmap(location_off_bitmap, null, location_dest, p);
+//                canvas.drawBitmap(location_off_bitmap, null, location_dest, p);
             }
         }
 
@@ -849,7 +849,7 @@ public class DrawPreview {
             // also possibly related https://code.google.com/p/android/issues/detail?id=181201
             String current_time = DateFormat.getTimeInstance().format(c.getTime());
             //String current_time = DateUtils.formatDateTime(getContext(), c.getTimeInMillis(), DateUtils.FORMAT_SHOW_TIME);
-            applicationInterface.drawTextWithBackground(canvas, p, current_time, Color.WHITE, Color.BLACK, location_x, location_y, true);
+//            applicationInterface.drawTextWithBackground(canvas, p, current_time, Color.WHITE, Color.BLACK, location_x, location_y, true);
         }
 
         if( camera_controller != null && sharedPreferences.getBoolean(Keys.getShowFreeMemoryPreferenceKey(), true) ) {
@@ -878,7 +878,7 @@ public class DrawPreview {
                 last_free_memory_time = time_now; // always set this, so that in case of free memory not being available, we aren't calling freeMemory() every frame
             }
             if( free_memory_gb >= 0.0f ) {
-                applicationInterface.drawTextWithBackground(canvas, p, getContext().getResources().getString(R.string.free_memory) + ": " + decimalFormat.format(free_memory_gb) + getContext().getResources().getString(R.string.gb_abbreviation), Color.WHITE, Color.BLACK, location_x, location_y, true);
+//                applicationInterface.drawTextWithBackground(canvas, p, getContext().getResources().getString(R.string.free_memory) + ": " + decimalFormat.format(free_memory_gb) + getContext().getResources().getString(R.string.gb_abbreviation), Color.WHITE, Color.BLACK, location_x, location_y, true);
             }
         }
 

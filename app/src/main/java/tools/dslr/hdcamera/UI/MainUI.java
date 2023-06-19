@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.ZoomControls;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 /** This contains functionality related to the main UI.
  */
 public class MainUI {
@@ -146,7 +148,7 @@ public class MainUI {
             Log.d(TAG, "    relative_orientation = " + relative_orientation);
         }
         int ui_rotation = (360 - relative_orientation) % 360;
-        main_activity.getPreview().setUIRotation(ui_rotation);
+//        main_activity.getPreview().setUIRotation(ui_rotation);
         int align_left = RelativeLayout.ALIGN_LEFT;
         int align_right = RelativeLayout.ALIGN_RIGHT;
         int align_top = RelativeLayout.ALIGN_TOP;
@@ -169,24 +171,24 @@ public class MainUI {
         }
         {
             // we use a dummy button, so that the GUI buttons keep their positioning even if the Settings button is hidden (visibility set to View.GONE)
-            View view = main_activity.findViewById(R.id.gui_anchor);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_left, 0);
-            layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
-            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-            layoutParams.addRule(align_parent_bottom, 0);
-            layoutParams.addRule(left_of, 0);
-            layoutParams.addRule(right_of, 0);
-            view.setLayoutParams(layoutParams);
+//            View view = main_activity.findViewById(R.id.gui_anchor);
+//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_left, 0);
+//            layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
+//            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
+//            layoutParams.addRule(align_parent_bottom, 0);
+//            layoutParams.addRule(left_of, 0);
+//            layoutParams.addRule(right_of, 0);
+//            view.setLayoutParams(layoutParams);
 //            setViewRotation(view, ui_rotation);
 
-            view = main_activity.findViewById(R.id.gallery);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_top, 0);
-            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
-            layoutParams.addRule(left_of, R.id.take_photo);
-            layoutParams.addRule(left_of, R.id.take_photo);
-            view.setLayoutParams(layoutParams);
+//            View view = main_activity.findViewById(R.id.gallery);
+//            ConstraintLayout.LayoutParams  layoutParams = (ConstraintLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_top, 0);
+//            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+//            layoutParams.addRule(left_of, R.id.take_photo);
+//            layoutParams.addRule(left_of, R.id.take_photo);
+//            view.setLayoutParams(layoutParams);
 //            setViewRotation(view, ui_rotation);
 
 //            view = main_activity.findViewById(R.id.settings);
@@ -246,86 +248,86 @@ public class MainUI {
 //            view.setLayoutParams(layoutParams);
 //            setViewRotation(view, ui_rotation);
 
-            view = main_activity.findViewById(R.id.audio_control);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_left, 0);
-            layoutParams.addRule(align_parent_right, 0);
-            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-            layoutParams.addRule(align_parent_bottom, 0);
-            layoutParams.addRule(left_of, R.id.switch_camera);
-            layoutParams.addRule(right_of, 0);
-            view.setLayoutParams(layoutParams);
-            setViewRotation(view, ui_rotation);
-
-            view = main_activity.findViewById(R.id.trash);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-            layoutParams.addRule(align_parent_bottom, 0);
-            layoutParams.addRule(left_of, R.id.audio_control);
-            layoutParams.addRule(right_of, 0);
-            view.setLayoutParams(layoutParams);
-            setViewRotation(view, ui_rotation);
-
-            view = main_activity.findViewById(R.id.share);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-            layoutParams.addRule(align_parent_bottom, 0);
-            layoutParams.addRule(left_of, R.id.trash);
-            layoutParams.addRule(right_of, 0);
-            view.setLayoutParams(layoutParams);
-            setViewRotation(view, ui_rotation);
-
-            view = main_activity.findViewById(R.id.take_photo);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_left, 0);
-            layoutParams.addRule(align_parent_right, 0);
-            view.setLayoutParams(layoutParams);
-            setViewRotation(view, ui_rotation);
-
-            view = main_activity.findViewById(R.id.zoom);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_parent_left, 0);
-            layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
-            layoutParams.addRule(align_parent_top, 0);
-            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
-            view.setLayoutParams(layoutParams);
-            view.setRotation(180.0f); // should always match the zoom_seekbar, so that zoom in and out are in the same directions
-
-            view = main_activity.findViewById(R.id.zoom_layout);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            // if we are showing the zoom control, the align next to that; otherwise have it aligned close to the edge of screen
-            if( sharedPreferences.getBoolean(Keys.getShowZoomControlsPreferenceKey(), false) ) {
-//                layoutParams.addRule(align_left, 0);
-//                layoutParams.addRule(align_right, R.id.zoom);
-//                layoutParams.addRule(above, R.id.zoom);
-//                layoutParams.addRule(below, 0);
-                // need to clear the others, in case we turn zoom controls on/off
+//            view = main_activity.findViewById(R.id.audio_control);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_left, 0);
+//            layoutParams.addRule(align_parent_right, 0);
+//            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
+//            layoutParams.addRule(align_parent_bottom, 0);
+//            layoutParams.addRule(left_of, R.id.switch_camera);
+//            layoutParams.addRule(right_of, 0);
+//            view.setLayoutParams(layoutParams);
+//            setViewRotation(view, ui_rotation);
+//
+//            view = main_activity.findViewById(R.id.trash);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
+//            layoutParams.addRule(align_parent_bottom, 0);
+//            layoutParams.addRule(left_of, R.id.audio_control);
+//            layoutParams.addRule(right_of, 0);
+//            view.setLayoutParams(layoutParams);
+//            setViewRotation(view, ui_rotation);
+//
+//            view = main_activity.findViewById(R.id.share);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
+//            layoutParams.addRule(align_parent_bottom, 0);
+//            layoutParams.addRule(left_of, R.id.trash);
+//            layoutParams.addRule(right_of, 0);
+//            view.setLayoutParams(layoutParams);
+//            setViewRotation(view, ui_rotation);
+//
+//            view = main_activity.findViewById(R.id.take_photo);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_left, 0);
+//            layoutParams.addRule(align_parent_right, 0);
+//            view.setLayoutParams(layoutParams);
+//            setViewRotation(view, ui_rotation);
+//
+//            view = main_activity.findViewById(R.id.zoom);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_parent_left, 0);
+//            layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
+//            layoutParams.addRule(align_parent_top, 0);
+//            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+//            view.setLayoutParams(layoutParams);
+//            view.setRotation(180.0f); // should always match the zoom_seekbar, so that zoom in and out are in the same directions
+//
+//            view = main_activity.findViewById(R.id.zoom_layout);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            // if we are showing the zoom control, the align next to that; otherwise have it aligned close to the edge of screen
+//            if( sharedPreferences.getBoolean(Keys.getShowZoomControlsPreferenceKey(), false) ) {
+////                layoutParams.addRule(align_left, 0);
+////                layoutParams.addRule(align_right, R.id.zoom);
+////                layoutParams.addRule(above, R.id.zoom);
+////                layoutParams.addRule(below, 0);
+//                // need to clear the others, in case we turn zoom controls on/off
+////                layoutParams.addRule(align_parent_left, 0);
+////                layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
+////                layoutParams.addRule(align_parent_top, 0);
+////                layoutParams.addRule(align_parent_bottom, 0);
+//            }
+//            else {
 //                layoutParams.addRule(align_parent_left, 0);
 //                layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
-//                layoutParams.addRule(align_parent_top, 0);
-//                layoutParams.addRule(align_parent_bottom, 0);
-            }
-            else {
-                layoutParams.addRule(align_parent_left, 0);
-                layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
-                layoutParams.addRule(above, R.id.take_photo);
-                // need to clear the others, in case we turn zoom controls on/off
-//                layoutParams.addRule(align_left, 0);
-//                layoutParams.addRule(align_right, 0);
-//                layoutParams.addRule(above, 0);
-//                layoutParams.addRule(below, 0);
-            }
-            view.setLayoutParams(layoutParams);
-
-            view = main_activity.findViewById(R.id.focus_seekbar);
-            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-            layoutParams.addRule(align_left, R.id.preview);
-            layoutParams.addRule(align_right, 0);
-            layoutParams.addRule(left_of, R.id.zoom_seekbar);
-            layoutParams.addRule(right_of, 0);
-            layoutParams.addRule(align_parent_top, 0);
-            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
-            view.setLayoutParams(layoutParams);
+//                layoutParams.addRule(above, R.id.take_photo);
+//                // need to clear the others, in case we turn zoom controls on/off
+////                layoutParams.addRule(align_left, 0);
+////                layoutParams.addRule(align_right, 0);
+////                layoutParams.addRule(above, 0);
+////                layoutParams.addRule(below, 0);
+//            }
+//            view.setLayoutParams(layoutParams);
+//
+//            view = main_activity.findViewById(R.id.focus_seekbar);
+//            layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            layoutParams.addRule(align_left, R.id.preview);
+//            layoutParams.addRule(align_right, 0);
+//            layoutParams.addRule(left_of, R.id.zoom_seekbar);
+//            layoutParams.addRule(right_of, 0);
+//            layoutParams.addRule(align_parent_top, 0);
+//            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+//            view.setLayoutParams(layoutParams);
         }
 
         {
@@ -344,7 +346,7 @@ public class MainUI {
 
             View view = main_activity.findViewById(R.id.exposure_seekbar);
             setViewRotation(view, ui_rotation);
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)view.getLayoutParams();
+            ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams)view.getLayoutParams();
             lp.width = width_pixels;
             lp.height = height_pixels;
             view.setLayoutParams(lp);
@@ -373,14 +375,14 @@ public class MainUI {
 
             view = main_activity.findViewById(R.id.iso_seekbar);
             setViewRotation(view, ui_rotation);
-            lp = (RelativeLayout.LayoutParams)view.getLayoutParams();
+            lp = (ConstraintLayout.LayoutParams)view.getLayoutParams();
             lp.width = width_pixels;
             lp.height = height_pixels;
             view.setLayoutParams(lp);
 
             view = main_activity.findViewById(R.id.exposure_time_seekbar);
             setViewRotation(view, ui_rotation);
-            lp = (RelativeLayout.LayoutParams)view.getLayoutParams();
+            lp = (ConstraintLayout.LayoutParams)view.getLayoutParams();
             lp.width = width_pixels;
             lp.height = height_pixels;
             view.setLayoutParams(lp);
@@ -405,14 +407,14 @@ public class MainUI {
 
         {
             View view = main_activity.findViewById(R.id.popup_container);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+//            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)view.getLayoutParams();
             //layoutParams.addRule(left_of, R.id.popup);
-            layoutParams.addRule(align_right, R.id.popup);
-            layoutParams.addRule(below, R.id.popup);
-            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
-            layoutParams.addRule(above, 0);
-            layoutParams.addRule(align_parent_top, 0);
-            view.setLayoutParams(layoutParams);
+//            layoutParams.addRule(align_right, R.id.popup);
+//            layoutParams.addRule(below, R.id.popup);
+//            layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+//            layoutParams.addRule(above, 0);
+//            layoutParams.addRule(align_parent_top, 0);
+//            view.setLayoutParams(layoutParams);
 
             setViewRotation(view, ui_rotation);
             // reset:
@@ -561,7 +563,7 @@ public class MainUI {
                 View zoomSeekBar = (View) main_activity.findViewById(R.id.zoom_seekbar);
                 if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
                     switchCameraButton.setVisibility(visibility);
-                switchVideoButton.setVisibility(visibility);
+                switchVideoButton.setVisibility(View.GONE);
                 if( main_activity.supportsExposureButton() )
                     exposureButton.setVisibility(visibility);
                 if( main_activity.getPreview().supportsExposureLock() )
@@ -619,7 +621,7 @@ public class MainUI {
                 if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
                     switchCameraButton.setVisibility(visibility);
                 if( !main_activity.getPreview().isVideo() )
-                    switchVideoButton.setVisibility(visibility); // still allow switch video when recording video
+                    switchVideoButton.setVisibility(View.GONE); // still allow switch video when recording video
                 if( main_activity.supportsExposureButton() && !main_activity.getPreview().isVideo() ) // still allow exposure when recording video
                     exposureButton.setVisibility(visibility);
                 if( main_activity.getPreview().supportsExposureLock() && !main_activity.getPreview().isVideo() ) // still allow exposure lock when recording video

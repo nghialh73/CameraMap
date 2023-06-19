@@ -651,7 +651,7 @@ public class MyApplicationInterface implements ApplicationInterface {
     @Override
     public boolean getGeotaggingPref() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        return sharedPreferences.getBoolean(Keys.getLocationPreferenceKey(), false);
+        return sharedPreferences.getBoolean(Keys.getLocationPreferenceKey(), true);
     }
 
     @Override

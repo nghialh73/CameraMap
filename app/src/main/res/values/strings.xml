@@ -265,6 +265,7 @@
 
     <string name="take_photo">Take Photo</string>
     <string name="gallery">Gallery</string>
+    <string name="location">Location</string>
     <string name="exposure">Exposure</string>
     <string name="exposure_lock">Exposure Lock</string>
     <string name="focus_mode">Focus Mode</string>

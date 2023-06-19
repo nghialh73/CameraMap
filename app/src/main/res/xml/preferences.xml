@@ -600,7 +600,7 @@
             android:title="@string/preference_screen_location_settings">
 
             <CheckBoxPreference
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:icon="@drawable/location_on"
                 android:key="preference_location"
                 android:summary="@string/preference_location_summary"

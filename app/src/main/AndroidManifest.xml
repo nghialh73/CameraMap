@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -85,6 +86,13 @@
             android:screenOrientation="portrait"
             android:taskAffinity="" />
 
+        <activity
+            android:name=".UI.location.LocationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:label="@string/location"
+            android:screenOrientation="portrait"/>
+
         <receiver
             android:name=".WidgetProvider"
             android:icon="@drawable/ic_launcher"
@@ -113,7 +121,9 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBU0W2c2WR0yt5T1IebGWm4LWynmDFdpzI"/>
     </application>
 
 </manifest>

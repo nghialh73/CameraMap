@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.RectF;
 import android.hardware.camera2.DngCreator;
 import android.location.Location;
 import android.media.ExifInterface;
@@ -1061,6 +1062,12 @@ public class ImageSaver extends Thread {
                     success = true;
                 }
                 if( picFile != null ) {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmapLayout = main_activity.getBitmapFromLayoutAddress();
+                    Bitmap sourceBitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                    Bitmap finalBitmap = bitmapWaterMark(sourceBitmap, bitmapLayout, 0.2f);
+                    addImageWaterMark(picFile, finalBitmap);
                     if( bitmap != null ) {
                         // need to update EXIF data!
                         if( Debug.LOG )
@@ -1357,6 +1364,52 @@ public class ImageSaver extends Thread {
             Log.d(TAG, "Save single image performance: total time: " + (System.currentTimeMillis() - time_s));
         }
         return success;
+    }
+
+    void addImageWaterMark(File filePath, Bitmap bitmapWaterMark) {
+        File file = new File(filePath.getAbsolutePath());
+        if (file.exists()) file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmapWaterMark.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    Bitmap bitmapWaterMark(Bitmap source, Bitmap watermark, float ratio) {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG | Paint.FILTER_BITMAP_FLAG);
+        int width, height;
+        Matrix matrix;
+        Bitmap bmp;
+        RectF r;
+        width = source.getWidth();
+        height = source.getHeight();
+        Log.d("nghialh", width + " " + height);
+        // Copy the original bitmap into the new one
+        bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(source, 0, 0, paint);
+
+        // Scale the watermark to be approximately to the ratio given of the source image height
+        float scale = (float) (((float) height * ratio) / (float) watermark.getHeight());
+
+        // Create the matrix
+        matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        // Determine the post-scaled size of the watermark
+        r = new RectF(0, 0, watermark.getWidth(), watermark.getHeight());
+        matrix.mapRect(r);
+
+        // Move the watermark to the bottom right corner
+        matrix.postTranslate(width - r.width(), height - r.height());
+
+        // Draw the watermark
+        canvas.drawBitmap(watermark, matrix, paint);
+        Log.d("nghialh", "2: " + bmp.getWidth() + " " + bmp.getHeight() );
+        return bmp;
     }
 
     /** May be run in saver thread or picture callback thread (depending on whether running in background).

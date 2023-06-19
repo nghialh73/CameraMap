@@ -1,14 +1,112 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:con1=".HomeActivity">
 
     <FrameLayout
         android:id="@+id/preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_centerInParent="true" />
+
+    <RelativeLayout
+        android:id="@+id/location_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="120dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@id/info_address"
+            android:layout_alignBottom="@id/info_address"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/background_map_view" />
+
+        <RelativeLayout
+            android:id="@+id/info_address"
+            android:layout_width="match_parent"
+            android:layout_toEndOf="@id/map_view"
+            android:background="@drawable/background_info_address"
+            android:padding="8dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@id/map_view"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
+
+            <TextView
+                android:id="@+id/lat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address"
+                android:layout_toEndOf="@id/map_view"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                tools:text="Lat 2345802348" />
+
+            <TextView
+                android:id="@+id/lon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lat"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:layout_toEndOf="@id/map_view"
+                tools:text="Lon 2345802348" />
+
+            <TextClock
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lon"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:format24Hour="dd/MM/yyyy"/>
+
+            <TextClock
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:format12Hour="hh:mm a"
+                android:layout_marginStart="8dp"
+                android:layout_below="@id/lon"
+                android:layout_toRightOf="@id/date"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/timezone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_below="@id/lon"
+                android:layout_toRightOf="@id/time"
+                tools:text="16/06/2023 AM GMT +07:00" />
+        </RelativeLayout>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/take_photo"
@@ -16,6 +114,9 @@
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:background="@null"
         android:contentDescription="@string/take_photo"
         android:onClick="clickedTakePhoto"
@@ -28,14 +129,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/zoom" />
+
     <FrameLayout
         android:id="@+id/zoom_layout"
         android:layout_width="50dp"
         android:layout_height="150dp"
         android:layout_alignParentRight="true"
         android:layout_above="@id/take_photo"
-        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="@id/preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/preview"
         android:orientation="vertical">
 
         <SeekBar
@@ -53,34 +161,82 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/focus_distance"
         android:visibility="invisible" />
 
-    <Button
-        android:id="@+id/gui_anchor"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="1dp"
-        android:scaleType="fitCenter" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/take_photo"
+        app:layout_constraintTop_toTopOf="@id/take_photo">
 
-    <ImageButton
-        android:id="@+id/gallery"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/gallery"
-        android:onClick="clickedGallery"
-        android:layout_alignTop="@id/take_photo"
-        android:layout_alignBottom="@id/take_photo"
-        android:layout_toLeftOf="@id/take_photo"
-        android:padding="8dp"
-        android:background="@null"
-        android:layout_marginRight="24dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/gallery" />
+        <ImageButton
+            android:id="@+id/gallery"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="24dp"
+            android:background="@null"
+            android:contentDescription="@string/gallery"
+            android:onClick="clickedGallery"
+            android:scaleType="fitCenter"
+            android:src="@drawable/gallery" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gallery"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/gallery" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/take_photo"
+        app:layout_constraintTop_toTopOf="@id/take_photo">
+
+        <ImageButton
+            android:id="@+id/location"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="24dp"
+            android:background="@null"
+            android:contentDescription="@string/location"
+            android:onClick="clickedLocation"
+            android:scaleType="fitCenter"
+            android:src="@drawable/location" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/location" />
+    </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/layout_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:weightSum="5">
+
         <ImageButton
             android:id="@+id/switch_camera"
             android:layout_width="50dp"
@@ -149,19 +305,9 @@
             android:background="@null"
             android:layout_alignParentTop="true"
             android:layout_weight="1"
+            android:visibility="visible"
             android:src="@drawable/settings" />
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
 
     <ImageButton
         android:id="@+id/audio_control"
@@ -170,6 +316,9 @@
         android:contentDescription="@string/audio_control_start"
         android:onClick="clickedAudioControl"
         android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:scaleType="fitCenter"
         android:layout_weight="1"
         android:visibility="gone"
@@ -182,6 +331,9 @@
         android:layout_height="50dp"
         android:contentDescription="@string/trash"
         android:onClick="clickedTrash"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:padding="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/trash"
@@ -193,6 +345,9 @@
         android:layout_height="50dp"
         android:contentDescription="@string/share"
         android:onClick="clickedShare"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:padding="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/share"
@@ -202,7 +357,10 @@
         android:id="@+id/exposure_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_centerVertical="true"
         android:contentDescription="@string/exposure_compensation" />
 
@@ -210,31 +368,46 @@
         android:id="@+id/exposure_seekbar_zoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/exposure_compensation" />
 
     <SeekBar
         android:id="@+id/iso_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/iso" />
 
     <SeekBar
         android:id="@+id/exposure_time_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/exposure" />
 
     <FrameLayout
         android:id="@+id/prefs_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true" >
+
+        <ScrollView
+            android:id="@+id/hide_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/locker"
@@ -245,15 +418,7 @@
         android:id="@+id/popup_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/settings"
-        android:layout_toLeftOf="@+id/settings" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_action" />
 
-    <ScrollView
-        android:id="@+id/hide_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,5 +4,5 @@ package tools.dslr.hdcamera;
  *  released versions.
  */
 public class Debug {
-    public static final boolean LOG = false;
+    public static final boolean LOG = true;
 }
