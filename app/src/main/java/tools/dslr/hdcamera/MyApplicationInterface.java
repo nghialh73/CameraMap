@@ -943,7 +943,7 @@ public class MyApplicationInterface implements ApplicationInterface {
                 try {
                     retriever.release();
                 }
-                catch(RuntimeException ex) {
+                catch(RuntimeException | IOException ex) {
                     // ignore
                 }
             }

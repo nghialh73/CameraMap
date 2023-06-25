@@ -25,29 +25,36 @@
         android:paddingVertical="12dp"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_view"
+        <RelativeLayout
+            android:id="@+id/layout_mapview"
             android:layout_width="120dp"
-            android:layout_height="0dp"
-            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@id/info_address"
             android:layout_alignBottom="@id/info_address"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/background_map_view" />
+            android:layout_alignParentStart="true"
+            android:background="@drawable/background_map_view">
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="12dp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/info_address"
             android:layout_width="match_parent"
-            android:layout_toEndOf="@id/map_view"
+            android:layout_toEndOf="@id/layout_mapview"
             android:background="@drawable/background_info_address"
             android:padding="8dp"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@id/map_view"
                 android:maxLines="2"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -60,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/address"
-                android:layout_toEndOf="@id/map_view"
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 tools:text="Lat 2345802348" />
@@ -72,7 +78,6 @@
                 android:layout_below="@id/lat"
                 android:textSize="14sp"
                 android:textColor="@color/white"
-                android:layout_toEndOf="@id/map_view"
                 tools:text="Lon 2345802348" />
 
             <TextClock
@@ -135,26 +140,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/zoom" />
 
-    <FrameLayout
-        android:id="@+id/zoom_layout"
-        android:layout_width="50dp"
-        android:layout_height="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_above="@id/take_photo"
+    <SeekBar
+        android:id="@+id/zoom_seekbar"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-60dp"
+        android:rotation="270"
         app:layout_constraintBottom_toBottomOf="@id/preview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/preview"
-        android:orientation="vertical">
-
-        <SeekBar
-            android:id="@+id/zoom_seekbar"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:rotation="270"
-            android:layout_gravity="center"
-            android:contentDescription="@string/zoom" />
-    </FrameLayout>
-
+        app:layout_constraintEnd_toEndOf="@id/preview"
+        app:layout_constraintTop_toTopOf="@id/preview"></SeekBar>
 
     <SeekBar
         android:id="@+id/focus_seekbar"
@@ -172,10 +166,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/take_photo"
-        app:layout_constraintTop_toTopOf="@id/take_photo">
+        app:layout_constraintEnd_toStartOf="@id/take_photo">
 
         <ImageButton
             android:id="@+id/gallery"
@@ -202,15 +196,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/take_photo"
-        app:layout_constraintTop_toTopOf="@id/take_photo">
+        app:layout_constraintStart_toEndOf="@id/take_photo">
 
         <ImageButton
             android:id="@+id/location"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="24dp"
             android:background="@null"
@@ -235,12 +229,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:weightSum="5">
+        android:layout_marginTop="16dp"
+        android:weightSum="4">
 
         <ImageButton
             android:id="@+id/switch_camera"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/switch_to_front_camera"
             android:onClick="clickedSwitchCamera"
             android:padding="10dp"
@@ -248,38 +243,41 @@
             android:layout_weight="1"
             android:background="@null"
             android:src="@drawable/switch_camera" />
+
         <ImageButton
             android:id="@+id/popup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/action_popup"
             android:onClick="clickedPopupSettings"
             android:padding="10dp"
             android:scaleType="fitCenter"
             android:layout_weight="1"
             android:background="@null"
-            android:src="@drawable/popup" />
+            android:src="@drawable/ic_popup" />
+
         <ImageButton
             android:id="@+id/exposure_lock"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/exposure_lock"
             android:onClick="clickedExposureLock"
             android:padding="10dp"
             android:background="@null"
             android:layout_weight="1"
             android:scaleType="fitCenter" />
+
         <ImageButton
             android:id="@+id/exposure"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/exposure"
             android:onClick="clickedExposure"
             android:padding="10dp"
             android:background="@null"
             android:scaleType="fitCenter"
             android:layout_weight="1"
-            android:src="@drawable/ic_exposure_white_48dp" />
+            android:src="@drawable/ic_exposure_24" />
 
         <ImageButton
             android:id="@+id/switch_video"
@@ -294,19 +292,19 @@
             android:layout_weight="1"
             android:src="@drawable/switch_video" />
 
-        <ImageButton
-            android:id="@+id/settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/action_settings"
-            android:onClick="clickedSettings"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:background="@null"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:visibility="visible"
-            android:src="@drawable/settings" />
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/settings"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:contentDescription="@string/action_settings"-->
+        <!--            android:onClick="clickedSettings"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:scaleType="fitCenter"-->
+        <!--            android:background="@null"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:visibility="visible"-->
+        <!--            android:src="@drawable/settings" />-->
     </LinearLayout>
 
     <ImageButton

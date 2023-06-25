@@ -37,7 +37,8 @@
         <activity
             android:name=".MainScreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,7 +51,9 @@
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -90,13 +93,15 @@
             android:name=".UI.location.LocationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:excludeFromRecents="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:label="@string/location"
             android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".WidgetProvider"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -108,7 +113,8 @@
         <receiver
             android:name=".WidgetProviderTakePhoto"
             android:icon="@drawable/ic_launcher_take_photo"
-            android:label="@string/take_photo">
+            android:label="@string/take_photo"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

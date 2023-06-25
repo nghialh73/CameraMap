@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -36,9 +35,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
 import java.util.List;
 
+import tools.dslr.hdcamera.LocationAddressListener;
 import tools.dslr.hdcamera.R;
 
-public class LocationActivity extends Activity implements OnMapReadyCallback {
+public class LocationActivity extends Activity implements OnMapReadyCallback, LocationAddressListener {
     private ImageView ivBack;
     private TextView tvAddress;
     private TextView tvLat;
@@ -56,7 +56,7 @@ public class LocationActivity extends Activity implements OnMapReadyCallback {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        mCheckLocation = new LocationServiceManager(this);
+        mCheckLocation = new LocationServiceManager(this, this);
         geocoder = new Geocoder(this);
         initView();
         initData();
@@ -69,6 +69,7 @@ public class LocationActivity extends Activity implements OnMapReadyCallback {
         tvLat = findViewById(R.id.txt_address_lat);
         tvLon = findViewById(R.id.txt_address_long);
         rlCopyAddress = findViewById(R.id.rl_copy_address);
+//        rlCopyLocation = findViewById(R.id.rl_copy_location);
         MapFragment mapfragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fr_map);
         mapfragment.getMapAsync(this);
 
@@ -99,16 +100,16 @@ public class LocationActivity extends Activity implements OnMapReadyCallback {
             }
         });
 
-        rlCopyLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!"".equals(tvLat.getText().toString()) && !"".equals(tvLon.getText().toString())) {
-                    String save = "Latitude: " + tvLat.getText().toString() + "; Longitude: " + tvLon.getText().toString();
-                    copyText(save);
-                    Toast.makeText(LocationActivity.this, "Has copied the location to the clipboard", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        rlCopyLocation.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!"".equals(tvLat.getText().toString()) && !"".equals(tvLon.getText().toString())) {
+//                    String save = "Latitude: " + tvLat.getText().toString() + "; Longitude: " + tvLon.getText().toString();
+//                    copyText(save);
+//                    Toast.makeText(LocationActivity.this, "Has copied the location to the clipboard", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
     }
 
     public void copyText(String txt) {
@@ -125,21 +126,7 @@ public class LocationActivity extends Activity implements OnMapReadyCallback {
         String result[] = ConvertLocationToString.getInDegree(latLng.latitude, latLng.longitude);
         tvLat.setText(result[0]);
         tvLon.setText(result[1]);
-        //tvAddress.setText(getLocationNameCompass(latLng));
-    }
-
-    public String getLocationNameCompass(LatLng latLng) {
-        String name = "Waiting";
-        try {
-            List<Address> addresses = this.geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addresses.size() > 0) {
-                return ((Address) addresses.get(0)).getAddressLine(0);
-            }
-            return name;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return name;
-        }
+        mCheckLocation.getAddressFromLocation(location.getLatitude(), location.getLongitude());
     }
 
     private void createLocationRequest() {
@@ -209,5 +196,15 @@ public class LocationActivity extends Activity implements OnMapReadyCallback {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_trai_phai, R.anim.anim_phai_trai);
+    }
+
+    @Override
+    public void getLocationAddress(double lat, double lon, String address) {
+        tvAddress.setText(address);
+    }
+
+    @Override
+    public void getLocation(double lat, double lon) {
+
     }
 }

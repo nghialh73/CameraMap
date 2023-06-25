@@ -68,7 +68,15 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ZoomControls;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,7 +95,7 @@ import tools.dslr.hdcamera.UI.FolderChooserDialog;
 import tools.dslr.hdcamera.UI.MainUI;
 import tools.dslr.hdcamera.UI.location.LocationActivity;
 
-public class HomeActivity extends Activity implements AudioListener.AudioListenerCallback, LocationAddressListener {
+public class HomeActivity extends AppCompatActivity implements AudioListener.AudioListenerCallback, LocationAddressListener, OnMapReadyCallback {
 
     private static final String TAG = "HomeActivity";
     private SensorManager sensormanager = null;
@@ -149,7 +157,10 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
     public static final String EXIT_ACTIVITY = "EXIT";
     private Exit_Receiver ExitReceiver;
     String APPLE_ADS_PATH;
+    private MapView mMapView;
+    private GoogleMap mGoogleMap;
 
+    private Location mLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         long debug_time = 0;
@@ -296,6 +307,9 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         //setup address view
         getLocation();
 
+        mMapView = findViewById(R.id.map_view);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.getMapAsync(this);
 
         // listen for gestures
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
@@ -398,8 +412,13 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
 
     void getLocation() {
         Location location = getLocationSupplier().getLocation();
+        mLocation = location;
         double lat = location.getLatitude();
         double lon = location.getLongitude();
+        if (mGoogleMap != null) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 13f));
+            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
+        }
         getLocationSupplier().getAddressFromLocation(lat, lon, this);
     }
 
@@ -493,8 +512,15 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
             textToSpeech = null;
         }
         super.onDestroy();
+        mMapView.onDestroy();
         unregisterReceiver(ExitReceiver);
 
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 
     @Override
@@ -805,7 +831,7 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
             debug_time = System.currentTimeMillis();
         }
         super.onResume();
-
+        mMapView.onResume();
         // Set black window background; also needed if we hide the virtual buttons in immersive mode
         // Note that we do it here rather than customising the theme's android:windowBackground, so this doesn't affect other views - in particular, the PreferenceFragment settings
         getWindow().getDecorView().getRootView().setBackgroundColor(Color.BLACK);
@@ -852,6 +878,7 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
         }
         waitUntilImageQueueEmpty(); // so we don't risk losing any images
         super.onPause(); // docs say to call this before freeing other things
+        mMapView.onPause();
         mainui.destroyPopup();
         sensormanager.unregisterListener(accelerometerListener);
         sensormanager.unregisterListener(magneticListener);
@@ -2010,6 +2037,15 @@ public class HomeActivity extends Activity implements AudioListener.AudioListene
     @Override
     public void getLocation(double lat, double lon) {
         getLocationSupplier().getAddressFromLocation(lat, lon, this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        if (mLocation != null) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13f));
+            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
+        }
     }
 
     /**

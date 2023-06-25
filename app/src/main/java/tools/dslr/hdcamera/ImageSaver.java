@@ -1,25 +1,5 @@
 package tools.dslr.hdcamera;
 
-import tools.dslr.hdcamera.CameraController.Controller;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -40,6 +20,26 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+import tools.dslr.hdcamera.CameraController.Controller;
 
 /** Handles the saving (and any required processing) of photos.
  */
@@ -1062,10 +1062,8 @@ public class ImageSaver extends Thread {
                     success = true;
                 }
                 if( picFile != null ) {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     Bitmap bitmapLayout = main_activity.getBitmapFromLayoutAddress();
-                    Bitmap sourceBitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                    Bitmap sourceBitmap = getBitmapFromPicFile(picFile);
                     Bitmap finalBitmap = bitmapWaterMark(sourceBitmap, bitmapLayout, 0.2f);
                     addImageWaterMark(picFile, finalBitmap);
                     if( bitmap != null ) {
@@ -1308,7 +1306,7 @@ public class ImageSaver extends Thread {
                     options.inPurgeable = true;
                 }
                 options.inSampleSize = sample_size;
-                thumbnail = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+                thumbnail = getBitmapFromPicFile(picFile);
             }
             else {
                 int width = bitmap.getWidth();
@@ -1327,7 +1325,7 @@ public class ImageSaver extends Thread {
             }
             else {
                 // now get the rotation from the Exif data
-                thumbnail = rotateForExif(thumbnail, exif_orientation_s, picFile.getAbsolutePath());
+                thumbnail = rotateForExif(thumbnail, 6, picFile.getAbsolutePath());
 
                 final Bitmap thumbnail_f = thumbnail;
                 main_activity.runOnUiThread(new Runnable() {
@@ -1360,10 +1358,30 @@ public class ImageSaver extends Thread {
 
         main_activity.savingImage(false);
 
-        if( Debug.LOG ) {
+        if (Debug.LOG) {
             Log.d(TAG, "Save single image performance: total time: " + (System.currentTimeMillis() - time_s));
         }
         return success;
+    }
+
+    Bitmap rotateBitmap90Degree(Bitmap originBitmap, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(originBitmap, 0, 0, originBitmap.getWidth(), originBitmap.getHeight(), matrix, true);
+        return rotatedBitmap;
+    }
+
+    Bitmap getBitmapFromPicFile(File file) {
+        Bitmap rotateBitmap = null;
+        try {
+            ExifInterface exif = new ExifInterface(file.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            Bitmap originBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            rotateBitmap = orientation == 6 || orientation == 0 ? rotateBitmap90Degree(originBitmap, orientation == 6 ? 90 : -90) : originBitmap;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return rotateBitmap;
     }
 
     void addImageWaterMark(File filePath, Bitmap bitmapWaterMark) {
@@ -1386,18 +1404,18 @@ public class ImageSaver extends Thread {
         RectF r;
         width = source.getWidth();
         height = source.getHeight();
-        Log.d("nghialh", width + " " + height);
         // Copy the original bitmap into the new one
         bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bmp);
         canvas.drawBitmap(source, 0, 0, paint);
 
         // Scale the watermark to be approximately to the ratio given of the source image height
-        float scale = (float) (((float) height * ratio) / (float) watermark.getHeight());
+        float scaleX = (float) (((float) width) / (float) watermark.getWidth());
+        float scaleY = (float) (((float) height * 0.25) / (float) watermark.getHeight());
 
         // Create the matrix
         matrix = new Matrix();
-        matrix.postScale(scale, scale);
+        matrix.postScale(scaleX, scaleY);
 
         // Determine the post-scaled size of the watermark
         r = new RectF(0, 0, watermark.getWidth(), watermark.getHeight());
@@ -1408,7 +1426,6 @@ public class ImageSaver extends Thread {
 
         // Draw the watermark
         canvas.drawBitmap(watermark, matrix, paint);
-        Log.d("nghialh", "2: " + bmp.getWidth() + " " + bmp.getHeight() );
         return bmp;
     }
 

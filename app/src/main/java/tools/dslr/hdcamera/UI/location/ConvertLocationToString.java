@@ -2,6 +2,7 @@ package tools.dslr.hdcamera.UI.location;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class ConvertLocationToString {
     public static String[] getInDegree(double latitude, double longitude) {
@@ -20,8 +21,8 @@ public class ConvertLocationToString {
             longSeconds %= 60;
             String latDegree = latDegrees >= 0 ? "N" : "S";
             String lonDegrees = longDegrees >= 0 ? "E" : "W";
-            result[0] = Math.abs(latDegrees) + "°" + latMinutes + "'" + latSeconds + " " + latDegree;
-            result[1] = Math.abs(longDegrees) + "°" + longMinutes + "'" + longSeconds + " " + lonDegrees;
+            result[0] = Math.abs(latDegrees) + "\u00B0" + latMinutes + "'" + latSeconds + " " + latDegree;
+            result[1] = Math.abs(longDegrees) + "\u00B0" + longMinutes + "'" + longSeconds + " " + lonDegrees;
             return result;
 
         } catch (Exception e) {

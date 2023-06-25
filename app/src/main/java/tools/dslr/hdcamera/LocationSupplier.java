@@ -22,11 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-interface LocationAddressListener {
-    void getLocationAddress(double lat, double lon, String address);
-    void getLocation(double lat, double lon);
-}
-
 /**
  * Handles listening for GPS location (both coarse and fine).
  */
@@ -237,15 +232,13 @@ public class LocationSupplier {
 
         @Override
         public void onLocationChanged(Location location) {
-            if (Debug.LOG)
-                Log.d(TAG, "onLocationChanged");
             this.has_received_location = true;
             // Android camera source claims we need to check lat/long != 0.0d
             if (location.getLatitude() != 0.0d || location.getLongitude() != 0.0d) {
-                if (Debug.LOG) {
-                    Log.d(TAG, "received location:");
-                    Log.d(TAG, "lat " + location.getLatitude() + " long " + location.getLongitude() + " accuracy " + location.getAccuracy());
-                }
+//                if (Debug.LOG) {
+//                    Log.d(TAG, "received location:");
+//                    Log.d(TAG, "lat " + location.getLatitude() + " long " + location.getLongitude() + " accuracy " + location.getAccuracy());
+//                }
                 this.location = location;
                 listenerAddress.getLocation(location.getLatitude(), location.getLongitude());
             }

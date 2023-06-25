@@ -4,13 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import tools.dslr.hdcamera.Debug;
+import tools.dslr.hdcamera.LocationAddressListener;
 
 @SuppressLint("Registered")
 public class LocationServiceManager extends Service implements LocationListener {
@@ -23,8 +33,10 @@ public class LocationServiceManager extends Service implements LocationListener 
     double longitude;
     private final Context mContext;
 
-    public LocationServiceManager(Context context) {
+    LocationAddressListener mListener;
+    public LocationServiceManager(Context context, LocationAddressListener listener) {
         this.mContext = context;
+        this.mListener = listener;
         getLocation();
     }
 
@@ -80,9 +92,48 @@ public class LocationServiceManager extends Service implements LocationListener 
         return this.longitude;
     }
 
+    public void getAddressFromLocation(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+        String addressString = "";
 
+        try {
+            List<Address> addressList = geocoder.getFromLocation(lat, lng, 1);
+
+            if (addressList != null && !addressList.isEmpty()) {
+                Address address = addressList.get(0);
+                StringBuilder sb = new StringBuilder();
+
+                if (address.getPremises() != null)
+                    sb.append(address.getPremises()).append(", ");
+                if (address.getFeatureName() != null)
+                    sb.append(address.getFeatureName()).append(", ");
+                if (address.getSubLocality() != null)
+                    sb.append(address.getSubLocality()).append(", ");
+                if (address.getLocality() != null)
+                    sb.append(address.getLocality()).append(", ");
+                if (address.getSubAdminArea() != null)
+                    sb.append(address.getSubAdminArea()).append(", ");
+                if (address.getAdminArea() != null)
+                    sb.append(address.getAdminArea()).append(", ");
+                if (address.getCountryName() != null)
+                    sb.append(address.getCountryName());
+                // StringBuilder sb is converted into a string
+                // and this value is assigned to the
+                // initially declared addressString string.
+                addressString = sb.toString();
+                mListener.getLocationAddress(lat, lng, addressString);
+            }
+        } catch (IOException e) {
+            if (Debug.LOG) {
+                Log.e("Geocoder", "Unable connect to Geocoder");
+            }
+        }
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
         this.location = location;
+        mListener.getLocation(location.getLatitude(), location.getLongitude());
     }
 
     public void onProviderDisabled(String provider) {

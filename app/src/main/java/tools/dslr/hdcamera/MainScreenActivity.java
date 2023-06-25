@@ -1,92 +1,63 @@
 package tools.dslr.hdcamera;
 
-import android.content.ActivityNotFoundException;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Handler;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.ebanx.swipebtn.OnActiveListener;
-import com.ebanx.swipebtn.OnStateChangeListener;
-import com.ebanx.swipebtn.SwipeButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import tools.dslr.hdcamera.UI.location.LocationServiceManager;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class MainScreenActivity extends AppCompatActivity implements LocationAddressListener {
 
-    LinearLayout llprivacy, rateus;
     Context context;
     boolean doubleBackToExitPressedOnce = false;
     private LocationServiceManager locationServiceManager = null;
-
     private Location location;
+
+    private ProgressBar mProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_main);
         context = this;
-//        locationServiceManager = new LocationServiceManager(this);
-//        location = locationServiceManager.getLocation();
-        llprivacy = findViewById(R.id.llprivacy);
-        llprivacy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Set Your Privacy Police URL",Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse(AdsManager.PRIVACY_POLICY_LINK));
-//                startActivity(intent);
-            }
-        });
 
-        rateus = findViewById(R.id.rateus);
-        rateus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
-                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                // To count with Play market backstack, After pressing back button,
-                // to taken back to our application, we need to add following flags to intent.
-                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                try {
-                    startActivity(goToMarket);
-                } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName())));
-                }
+        mProgressBar = findViewById(R.id.loading_indicator);
+        mProgressBar.setVisibility(View.VISIBLE);
+//        final ImageButton swipeButton = findViewById(R.id.swipe_start);
+//        swipeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                MainScreenActivity.this.startActivity(new Intent(MainScreenActivity.this, HomeActivity.class));
+//            }
+//        });
+        boolean has_coarse_location_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean has_fine_location_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (has_coarse_location_permission && has_fine_location_permission) {
+            initLocation();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions( new String[] { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
             }
-        });
+        }
+    }
 
-        final SwipeButton swipeButton = findViewById(R.id.swipe_start);
-        swipeButton.setActivated(true);
-
-        swipeButton.setOnActiveListener(new OnActiveListener() {
-            @Override
-            public void onActive() {
-                MainScreenActivity.this.startActivity(new Intent(MainScreenActivity.this, HomeActivity.class));
-            }
-        });
-        swipeButton.setActivated(false);
-        swipeButton.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
-            public void onStateChange(boolean active) {
-                if (active) {
-                    swipeButton.setButtonBackground(ContextCompat.getDrawable(MainScreenActivity.this, R.drawable.buttondownload));
-                } else {
-                    swipeButton.setButtonBackground(ContextCompat.getDrawable(MainScreenActivity.this, R.drawable.buttondownload));
-                }
-
-            }
-        });
+    private void initLocation() {
+        locationServiceManager = new LocationServiceManager(this, this);
+        location = locationServiceManager.getLocation();
+        if (location != null) {
+            locationServiceManager.getAddressFromLocation(location.getLatitude(), location.getLongitude());
+        }
     }
 
     @Override
@@ -106,5 +77,29 @@ public class MainScreenActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    @Override
+    public void getLocationAddress(double lat, double lon, String address) {
+        if (address != null && !address.isEmpty()) {
+            mProgressBar.setVisibility(View.GONE);
+            startActivity(new Intent(MainScreenActivity.this, HomeActivity.class));
+        }
+    }
+
+    @Override
+    public void getLocation(double lat, double lon) {
+        locationServiceManager.getAddressFromLocation(lat, lon);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initLocation();
+            }
+        }
     }
 }

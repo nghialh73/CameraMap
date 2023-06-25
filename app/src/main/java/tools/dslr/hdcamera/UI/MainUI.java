@@ -51,7 +51,7 @@ public class MainUI {
         this.setSeekbarColors();
 
         this.setIcon(R.id.gallery);
-        this.setIcon(R.id.settings);
+//        this.setIcon(R.id.settings);
         this.setIcon(R.id.popup);
         this.setIcon(R.id.exposure_lock);
         this.setIcon(R.id.exposure);
@@ -148,7 +148,7 @@ public class MainUI {
             Log.d(TAG, "    relative_orientation = " + relative_orientation);
         }
         int ui_rotation = (360 - relative_orientation) % 360;
-//        main_activity.getPreview().setUIRotation(ui_rotation);
+        main_activity.getPreview().setUIRotation(ui_rotation);
         int align_left = RelativeLayout.ALIGN_LEFT;
         int align_right = RelativeLayout.ALIGN_RIGHT;
         int align_top = RelativeLayout.ALIGN_TOP;
@@ -514,11 +514,11 @@ public class MainUI {
     }
 
     public void onOrientationChanged(int orientation) {
-		/*if( Debug.LOG ) {
+		if( Debug.LOG ) {
 			Log.d(TAG, "onOrientationChanged()");
 			Log.d(TAG, "orientation: " + orientation);
 			Log.d(TAG, "current_orientation: " + current_orientation);
-		}*/
+		}
         if( orientation == OrientationEventListener.ORIENTATION_UNKNOWN )
             return;
         int diff = Math.abs(orientation - current_orientation);
@@ -558,7 +558,7 @@ public class MainUI {
                 View audioControlButton = (View) main_activity.findViewById(R.id.audio_control);
                 View popupButton = (View) main_activity.findViewById(R.id.popup);
                 View galleryButton = (View) main_activity.findViewById(R.id.gallery);
-                View settingsButton = (View) main_activity.findViewById(R.id.settings);
+//                View settingsButton = (View) main_activity.findViewById(R.id.settings);
                 View zoomControls = (View) main_activity.findViewById(R.id.zoom);
                 View zoomSeekBar = (View) main_activity.findViewById(R.id.zoom_seekbar);
                 if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
@@ -572,7 +572,7 @@ public class MainUI {
                     audioControlButton.setVisibility(visibility);
                 popupButton.setVisibility(visibility);
                 galleryButton.setVisibility(visibility);
-                settingsButton.setVisibility(visibility);
+//                settingsButton.setVisibility(visibility);
                 if( Debug.LOG ) {
                     Log.d(TAG, "has_zoom: " + main_activity.getPreview().supportsZoom());
                 }
@@ -748,7 +748,7 @@ public class MainUI {
             popup.setImageResource(R.drawable.popup_flash_red_eye);
         }
         else {
-            popup.setImageResource(R.drawable.popup);
+            popup.setImageResource(R.drawable.ic_popup);
         }
     }
 
