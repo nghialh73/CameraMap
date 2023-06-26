@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,6 +27,8 @@ public class MainScreenActivity extends AppCompatActivity implements LocationAdd
     private Location location;
 
     private ProgressBar mProgressBar;
+
+    private boolean isLoadLocation = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,43 +64,30 @@ public class MainScreenActivity extends AppCompatActivity implements LocationAdd
     }
 
     @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-    }
-
-    @Override
     public void getLocationAddress(double lat, double lon, String address) {
-        if (address != null && !address.isEmpty()) {
+        if (address != null && !address.isEmpty() && !isLoadLocation) {
+            isLoadLocation = true;
             mProgressBar.setVisibility(View.GONE);
-            startActivity(new Intent(MainScreenActivity.this, HomeActivity.class));
+            Intent intent = new Intent(MainScreenActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            this.finish();
         }
     }
 
     @Override
     public void getLocation(double lat, double lon) {
-        locationServiceManager.getAddressFromLocation(lat, lon);
+        if (!isLoadLocation) {
+            locationServiceManager.getAddressFromLocation(lat, lon);
+            isLoadLocation = true;
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 100) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                 initLocation();
             }
         }

@@ -1300,9 +1300,9 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
             }
         }
         super.onBackPressed();
-        Intent intent = new Intent(con, MainScreenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+//        Intent intent = new Intent(con, MainScreenActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
 
 
     }
