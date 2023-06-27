@@ -62,6 +62,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -310,7 +311,6 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
         mMapView = findViewById(R.id.map_view);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
-
         // listen for gestures
         gestureDetector = new GestureDetector(this, new MyGestureDetector());
         if (Debug.LOG)
@@ -412,14 +412,16 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
 
     void getLocation() {
         Location location = getLocationSupplier().getLocation();
-        mLocation = location;
-        double lat = location.getLatitude();
-        double lon = location.getLongitude();
-        if (mGoogleMap != null) {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 13f));
-            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
+        if (location != null) {
+            mLocation = location;
+            double lat = location.getLatitude();
+            double lon = location.getLongitude();
+            if (mGoogleMap != null) {
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 13f));
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
+            }
+            getLocationSupplier().getAddressFromLocation(lat, lon, this);
         }
-        getLocationSupplier().getAddressFromLocation(lat, lon, this);
     }
 
     private void updateAddress(double lat, double lon, String address) {
@@ -2042,6 +2044,19 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        mGoogleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                    @Override
+                    public void onSnapshotReady(Bitmap bitmap) {
+                        ImageView imageView = findViewById(R.id.img_map_view);
+                        imageView.setImageBitmap(bitmap);
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
         if (mLocation != null) {
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13f));
             mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));

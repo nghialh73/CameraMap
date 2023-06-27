@@ -51,7 +51,7 @@ public class MainUI {
         this.setSeekbarColors();
 
         this.setIcon(R.id.gallery);
-//        this.setIcon(R.id.settings);
+        this.setIcon(R.id.settings);
         this.setIcon(R.id.popup);
         this.setIcon(R.id.exposure_lock);
         this.setIcon(R.id.exposure);
@@ -558,7 +558,7 @@ public class MainUI {
                 View audioControlButton = (View) main_activity.findViewById(R.id.audio_control);
                 View popupButton = (View) main_activity.findViewById(R.id.popup);
                 View galleryButton = (View) main_activity.findViewById(R.id.gallery);
-//                View settingsButton = (View) main_activity.findViewById(R.id.settings);
+                View settingsButton = (View) main_activity.findViewById(R.id.settings);
                 View zoomControls = (View) main_activity.findViewById(R.id.zoom);
                 View zoomSeekBar = (View) main_activity.findViewById(R.id.zoom_seekbar);
                 if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
@@ -572,7 +572,7 @@ public class MainUI {
                     audioControlButton.setVisibility(visibility);
                 popupButton.setVisibility(visibility);
                 galleryButton.setVisibility(visibility);
-//                settingsButton.setVisibility(visibility);
+                settingsButton.setVisibility(View.GONE);
                 if( Debug.LOG ) {
                     Log.d(TAG, "has_zoom: " + main_activity.getPreview().supportsZoom());
                 }
