@@ -27,6 +27,8 @@ import android.widget.ZoomControls;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.material.imageview.ShapeableImageView;
+
 /** This contains functionality related to the main UI.
  */
 public class MainUI {
@@ -49,54 +51,34 @@ public class MainUI {
         this.main_activity = main_activity;
 
         this.setSeekbarColors();
-
-        this.setIcon(R.id.gallery);
-        this.setIcon(R.id.settings);
-        this.setIcon(R.id.popup);
-        this.setIcon(R.id.exposure_lock);
-        this.setIcon(R.id.exposure);
-        this.setIcon(R.id.switch_video);
-        this.setIcon(R.id.switch_camera);
-        this.setIcon(R.id.audio_control);
-        this.setIcon(R.id.trash);
-        this.setIcon(R.id.share);
-    }
-
-    private void setIcon(int id) {
-        if( Debug.LOG )
-            Log.d(TAG, "setIcon: " + id);
-        ImageButton button = (ImageButton)main_activity.findViewById(id);
-//        button.setBackgroundColor(Color.argb(63, 63, 63, 63)); // n.b., rgb color seems to be ignored for Android 6 onwards, but still relevant for older versions
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setSeekbarColors() {
         if( Debug.LOG )
             Log.d(TAG, "setSeekbarColors");
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-            ColorStateList progress_color = ColorStateList.valueOf( Color.argb(255, 240, 240, 240) );
-            ColorStateList thumb_color = ColorStateList.valueOf( Color.argb(255, 255, 255, 255) );
+        ColorStateList progress_color = ColorStateList.valueOf( Color.argb(255, 240, 240, 240) );
+        ColorStateList thumb_color = ColorStateList.valueOf( Color.argb(255, 255, 255, 255) );
 
-            SeekBar seekBar = (SeekBar)main_activity.findViewById(R.id.zoom_seekbar);
-            seekBar.setProgressTintList(progress_color);
-            seekBar.setThumbTintList(thumb_color);
+        SeekBar seekBar = (SeekBar)main_activity.findViewById(R.id.zoom_seekbar);
+        seekBar.setProgressTintList(progress_color);
+        seekBar.setThumbTintList(thumb_color);
 
-            seekBar = (SeekBar)main_activity.findViewById(R.id.focus_seekbar);
-            seekBar.setProgressTintList(progress_color);
-            seekBar.setThumbTintList(thumb_color);
+        seekBar = (SeekBar)main_activity.findViewById(R.id.focus_seekbar);
+        seekBar.setProgressTintList(progress_color);
+        seekBar.setThumbTintList(thumb_color);
 
-            seekBar = (SeekBar)main_activity.findViewById(R.id.exposure_seekbar);
-            seekBar.setProgressTintList(progress_color);
-            seekBar.setThumbTintList(thumb_color);
+        seekBar = (SeekBar)main_activity.findViewById(R.id.exposure_seekbar);
+        seekBar.setProgressTintList(progress_color);
+        seekBar.setThumbTintList(thumb_color);
 
-            seekBar = (SeekBar)main_activity.findViewById(R.id.iso_seekbar);
-            seekBar.setProgressTintList(progress_color);
-            seekBar.setThumbTintList(thumb_color);
+        seekBar = (SeekBar)main_activity.findViewById(R.id.iso_seekbar);
+        seekBar.setProgressTintList(progress_color);
+        seekBar.setThumbTintList(thumb_color);
 
-            seekBar = (SeekBar)main_activity.findViewById(R.id.exposure_time_seekbar);
-            seekBar.setProgressTintList(progress_color);
-            seekBar.setThumbTintList(thumb_color);
-        }
+        seekBar = (SeekBar)main_activity.findViewById(R.id.exposure_time_seekbar);
+        seekBar.setProgressTintList(progress_color);
+        seekBar.setThumbTintList(thumb_color);
     }
 
     /** Similar view.setRotation(ui_rotation), but achieves this via an animation.

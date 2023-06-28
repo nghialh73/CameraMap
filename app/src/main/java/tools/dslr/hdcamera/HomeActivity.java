@@ -78,6 +78,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -1474,7 +1475,7 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
             Log.d(TAG, "updateGalleryIconToBlank");
 
 
-        ImageButton galleryButton = (ImageButton) this.findViewById(R.id.gallery);
+        ShapeableImageView galleryButton = this.findViewById(R.id.gallery);
         int bottom = galleryButton.getPaddingBottom();
         int top = galleryButton.getPaddingTop();
         int right = galleryButton.getPaddingRight();

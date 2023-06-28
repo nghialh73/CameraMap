@@ -27,12 +27,12 @@
 
         <RelativeLayout
             android:id="@+id/layout_mapview"
-            android:layout_width="120dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/info_address"
             android:layout_alignBottom="@id/info_address"
             android:layout_alignParentStart="true"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/background_map_view">
 
             <com.google.android.gms.maps.MapView
@@ -52,6 +52,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:contentDescription="@string/Map"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -71,7 +72,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
@@ -81,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/address"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 tools:text="Lat 2345802348" />
 
             <TextView
@@ -90,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lat"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 tools:text="Lon 2345802348" />
 
             <TextClock
@@ -100,26 +101,26 @@
                 android:layout_below="@id/lon"
                 android:format24Hour="dd/MM/yyyy"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextClock
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lon"
-                android:layout_toRightOf="@id/date"
+                android:layout_toEndOf="@id/date"
                 android:format12Hour="hh:mm a"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/timezone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lon"
-                android:layout_toRightOf="@id/time"
+                android:layout_toEndOf="@id/time"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 tools:text="16/06/2023 AM GMT +07:00" />
         </RelativeLayout>
     </RelativeLayout>
@@ -159,7 +160,7 @@
         android:rotation="270"
         app:layout_constraintBottom_toBottomOf="@id/preview"
         app:layout_constraintEnd_toEndOf="@id/preview"
-        app:layout_constraintTop_toTopOf="@id/preview"></SeekBar>
+        app:layout_constraintTop_toTopOf="@id/preview" />
 
     <SeekBar
         android:id="@+id/focus_seekbar"
@@ -174,62 +175,70 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/take_photo">
+        app:layout_constraintBottom_toBottomOf="@id/take_photo"
+        app:layout_constraintEnd_toStartOf="@id/take_photo"
+        app:layout_constraintTop_toTopOf="@id/take_photo">
 
-        <ImageButton
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/gallery"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginRight="24dp"
-            android:background="@null"
             android:contentDescription="@string/gallery"
             android:onClick="clickedGallery"
-            android:scaleType="fitCenter"
-            android:src="@drawable/gallery" />
+            android:padding="2dp"
+            android:src="@drawable/gallery"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            app:strokeColor="@android:color/darker_gray"
+            app:strokeWidth="2dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/gallery"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:text="@string/gallery" />
+            android:layout_marginTop="4dp"
+            android:text="sdadgasdgasdgasdgasdgasdg"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/take_photo"
+        app:layout_constraintTop_toTopOf="@id/take_photo"
         app:layout_constraintStart_toEndOf="@id/take_photo">
 
         <ImageButton
             android:id="@+id/location"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginRight="24dp"
             android:background="@null"
             android:contentDescription="@string/location"
             android:onClick="clickedLocation"
-            android:scaleType="fitCenter"
-            android:src="@drawable/location" />
+            android:scaleType="center"
+            android:src="@drawable/ic_location" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/location"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
+            android:textSize="10sp"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/white"
             android:text="@string/location" />
     </RelativeLayout>
 
