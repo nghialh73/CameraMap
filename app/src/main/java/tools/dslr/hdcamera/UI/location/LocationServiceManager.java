@@ -93,7 +93,7 @@ public class LocationServiceManager extends Service implements LocationListener 
     }
 
     public void getAddressFromLocation(double lat, double lng) {
-        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(mContext);
         String addressString = "";
 
         try {
@@ -120,7 +120,8 @@ public class LocationServiceManager extends Service implements LocationListener 
                 // StringBuilder sb is converted into a string
                 // and this value is assigned to the
                 // initially declared addressString string.
-                addressString = sb.toString();
+
+                addressString = address.getAddressLine(0);
                 mListener.getLocationAddress(lat, lng, addressString);
             }
         } catch (IOException e) {

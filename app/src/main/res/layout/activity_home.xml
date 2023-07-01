@@ -61,67 +61,229 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/layout_mapview"
+            android:layout_alignTop="@id/info_address"
+            android:layout_alignBottom="@id/info_address"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/background_info_address"
             android:padding="8dp">
 
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <RelativeLayout
+                android:id="@+id/layout_content"
                 android:layout_alignParentTop="true"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
+                android:layout_toStartOf="@id/layout_weather_1"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
-            <TextView
-                android:id="@+id/lat"
+                <TextView
+                    android:id="@+id/lat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/address"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:text="Lat 2345802348" />
+
+                <TextView
+                    android:id="@+id/lon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lat"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:text="Lon 2345802348" />
+
+                <TextClock
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lon"
+                    android:format24Hour="dd/MM/yyyy"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextClock
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lon"
+                    android:layout_toEndOf="@id/date"
+                    android:format12Hour="hh:mm a"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/timezone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lon"
+                    android:layout_toEndOf="@id/time"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:text="16/06/2023 AM GMT +07:00" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_weather_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/address"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:text="Lat 2345802348" />
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true">
+                <LinearLayout
+                    android:id="@+id/layout_temp"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/img_temp"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@id/temp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/img_temp"/>
+                    <TextView
+                        android:id="@+id/temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/white"
+                        tools:text="30C"/>
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/lon"
+                <LinearLayout
+                    android:id="@+id/layout_humidity"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="22dp"
+                    android:layout_centerVertical="true"
+                    android:layout_below="@id/layout_temp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/img_humidity"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@id/temp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/img_humidity"/>
+                    <TextView
+                        android:id="@+id/humidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/white"
+                        tools:text="30C"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_weather_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lat"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:text="Lon 2345802348" />
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/layout_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true">
+                <LinearLayout
+                    android:id="@+id/layout_wind"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/layout_visibility"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/img_wind"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@id/temp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/img_wind"/>
+                    <TextView
+                        android:id="@+id/wind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/white"
+                        tools:text="30C"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_visibility"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/img_visibility"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@id/temp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/img_visibility"/>
+                    <TextView
+                        android:id="@+id/visibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/white"
+                        tools:text="30C"/>
+                </LinearLayout>
 
-            <TextClock
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lon"
-                android:format24Hour="dd/MM/yyyy"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                <LinearLayout
+                    android:id="@+id/layout_rain"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_toEndOf="@id/layout_visibility"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/img_rain"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@id/temp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/img_rain"/>
+                    <TextView
+                        android:id="@+id/rain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/white"
+                        tools:text="30C"/>
+                </LinearLayout>
 
-            <TextClock
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lon"
-                android:layout_toEndOf="@id/date"
-                android:format12Hour="hh:mm a"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/timezone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lon"
-                android:layout_toEndOf="@id/time"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:text="16/06/2023 AM GMT +07:00" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -416,6 +578,7 @@
         android:id="@+id/prefs_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_centerInParent="true">
 
         <ScrollView
@@ -430,7 +593,9 @@
     <FrameLayout
         android:id="@+id/locker"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="33dp" />
 
     <ScrollView
         android:id="@+id/popup_container"

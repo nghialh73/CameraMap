@@ -110,7 +110,7 @@ public class LocationSupplier {
                 // StringBuilder sb is converted into a string
                 // and this value is assigned to the
                 // initially declared addressString string.
-                addressString = sb.toString();
+                addressString = address.getAddressLine(0);
                 listener.getLocationAddress(lat, lng, addressString);
             }
         } catch (IOException e) {

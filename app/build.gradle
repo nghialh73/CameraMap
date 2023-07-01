@@ -48,6 +48,11 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.gms:play-services-maps:11.4.2'
     implementation 'com.google.android.gms:play-services-location:11.4.2'
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
     //noinspection GradleDependency
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

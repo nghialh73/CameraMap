@@ -72,6 +72,7 @@ import android.widget.ZoomControls;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -90,12 +91,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tools.dslr.hdcamera.CameraController.Controller;
 import tools.dslr.hdcamera.CameraController.ControllerManager2;
 import tools.dslr.hdcamera.Preview.Preview;
 import tools.dslr.hdcamera.UI.FolderChooserDialog;
 import tools.dslr.hdcamera.UI.MainUI;
 import tools.dslr.hdcamera.UI.location.LocationActivity;
+import tools.dslr.hdcamera.repository.RetrofitClient;
+import tools.dslr.hdcamera.repository.model.weather.Current;
+import tools.dslr.hdcamera.repository.model.weather.Hour;
+import tools.dslr.hdcamera.repository.model.weather.Weather;
 
 public class HomeActivity extends AppCompatActivity implements AudioListener.AudioListenerCallback, LocationAddressListener, OnMapReadyCallback {
 
@@ -422,6 +430,7 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)));
             }
             getLocationSupplier().getAddressFromLocation(lat, lon, this);
+            getWeather(lat, lon);
         }
     }
 
@@ -1495,7 +1504,7 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
     void updateGalleryIcon(Bitmap thumbnail) {
         if (Debug.LOG)
             Log.d(TAG, "updateGalleryIcon: " + thumbnail);
-        ImageButton galleryButton = (ImageButton) this.findViewById(R.id.gallery);
+        ShapeableImageView  galleryButton = this.findViewById(R.id.gallery);
         galleryButton.setImageBitmap(thumbnail);
         g_bitmap = thumbnail;
     }
@@ -2062,6 +2071,52 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13f));
             mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
         }
+    }
+
+    void getWeather(double lat, double lon) {
+        String currentLocation = lat + "," + lon;
+        Call<Weather> callLocationKey = RetrofitClient.getInstance().getApiService().getWeatherByDay(currentLocation,3, "98468a07a8c9421a87232122231905\n");
+        callLocationKey.enqueue(new Callback<Weather>() {
+            @Override
+            public void onResponse(Call<Weather> call, Response<Weather> response) {
+                //ToDo
+                if (response.body() != null) {
+                    TextView textTemp = findViewById(R.id.temp);
+                    ImageView imgTemp = findViewById(R.id.img_temp);
+                    TextView textHumidity = findViewById(R.id.humidity);
+                    TextView textWind = findViewById(R.id.wind);
+                    TextView textVisibility = findViewById(R.id.visibility);
+                    TextView textRain = findViewById(R.id.rain);
+                    RelativeLayout weather1 = findViewById(R.id.layout_weather_1);
+                    RelativeLayout weather2 = findViewById(R.id.layout_weather_2);
+                    weather1.setVisibility(View.VISIBLE);
+                    weather2.setVisibility(View.VISIBLE);
+                    textTemp.setVisibility(View.VISIBLE);
+                    textHumidity.setVisibility(View.VISIBLE);
+                    textWind.setVisibility(View.VISIBLE);
+                    textVisibility.setVisibility(View.VISIBLE);
+                    textRain.setVisibility(View.VISIBLE);
+                    Current currentForecast = response.body().getCurrent();
+                    Glide.with(HomeActivity.this).load("https:" + currentForecast.getCondition().getIcon()).into(imgTemp);
+                    textTemp.setText(currentForecast.getTempC().toString() + "ºC");
+                    textWind.setText(currentForecast.getWindKph().toString() + " Km/h");
+                    textHumidity.setText(currentForecast.getHumidity() + " %");
+                    textVisibility.setText(currentForecast.getVisKm().toString() + " Km");
+//                    txtPressureToDay.setText(currentForecast.getPressureMb().toString() + " mb");
+//                    txtUvToDay.setText(currentForecast.getUv().toString());
+                    textRain.setText(currentForecast.getPrecipMm().toString() + " mm");
+                } else {
+                    RelativeLayout weather1 = findViewById(R.id.layout_weather_1);
+                    RelativeLayout weather2 = findViewById(R.id.layout_weather_2);
+                    weather1.setVisibility(View.GONE);
+                    weather2.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Weather> call, Throwable t) {
+            }
+        });
     }
 
     /**
