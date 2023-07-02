@@ -378,15 +378,15 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
                 editor.apply();
             }
         }
-        if (!has_done_first_time && !is_test) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle(R.string.app_name);
-            alertDialog.setMessage(R.string.intro_text);
-            alertDialog.setPositiveButton(R.string.intro_ok, null);
-            alertDialog.show();
-
-            setFirstTimeFlag();
-        }
+//        if (!has_done_first_time && !is_test) {
+//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//            alertDialog.setTitle(R.string.app_name);
+//            alertDialog.setMessage(R.string.intro_text);
+//            alertDialog.setPositiveButton(R.string.intro_ok, null);
+//            alertDialog.show();
+//
+//            setFirstTimeFlag();
+//        }
 
         // load icons
         preloadIcons(R.array.flash_icons);
