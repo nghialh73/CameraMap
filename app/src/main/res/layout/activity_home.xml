@@ -19,20 +19,20 @@
         android:id="@+id/location_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="12dp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="@id/preview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <RelativeLayout
             android:id="@+id/layout_mapview"
-            android:layout_width="110dp"
+            android:layout_width="@dimen/_90sdp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/info_address"
             android:layout_alignBottom="@id/info_address"
             android:layout_alignParentStart="true"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/_4sdp"
             android:background="@drawable/background_map_view">
 
             <com.google.android.gms.maps.MapView
@@ -65,7 +65,7 @@
             android:layout_alignBottom="@id/info_address"
             android:layout_alignParentEnd="true"
             android:background="@drawable/background_info_address"
-            android:padding="8dp">
+            android:padding="@dimen/_4sdp">
 
             <RelativeLayout
                 android:id="@+id/layout_content"
@@ -83,7 +83,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold"
                     tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/address"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_10sdp"
                     tools:text="Lat 2345802348" />
 
                 <TextView
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/lat"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_10sdp"
                     tools:text="Lon 2345802348" />
 
                 <TextClock
@@ -112,7 +112,7 @@
                     android:layout_below="@id/lon"
                     android:format24Hour="dd/MM/yyyy"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextClock
                     android:id="@+id/time"
@@ -122,7 +122,7 @@
                     android:layout_toEndOf="@id/date"
                     android:format12Hour="hh:mm a"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/timezone"
@@ -131,7 +131,7 @@
                     android:layout_below="@id/lon"
                     android:layout_toEndOf="@id/time"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_10sdp"
                     tools:text="16/06/2023 AM GMT +07:00" />
             </RelativeLayout>
 
@@ -140,8 +140,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="4dp"
-                android:visibility="gone"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:visibility="visible"
                 android:layout_alignParentEnd="true">
                 <LinearLayout
                     android:id="@+id/layout_temp"
@@ -150,19 +150,15 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/img_temp"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@id/temp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
                         android:src="@drawable/img_temp"/>
                     <TextView
                         android:id="@+id/temp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
+                        android:textSize="@dimen/_8sdp"
                         android:textColor="@color/white"
                         tools:text="30C"/>
                 </LinearLayout>
@@ -171,27 +167,23 @@
                     android:id="@+id/layout_humidity"
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:layout_centerVertical="true"
                     android:layout_below="@id/layout_temp"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/img_humidity"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@id/temp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
                         android:src="@drawable/img_humidity"/>
                     <TextView
                         android:id="@+id/humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
+                        android:textSize="@dimen/_8sdp"
                         android:textColor="@color/white"
-                        tools:text="30C"/>
+                        tools:text="75%"/>
                 </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
@@ -201,7 +193,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/layout_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:visibility="gone"
                 android:layout_alignParentEnd="true">
                 <LinearLayout
@@ -214,19 +206,15 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/img_wind"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@id/temp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
                         android:src="@drawable/img_wind"/>
                     <TextView
                         android:id="@+id/wind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
+                        android:textSize="@dimen/_8sdp"
                         android:textColor="@color/white"
                         tools:text="30C"/>
                 </LinearLayout>
@@ -239,19 +227,15 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/img_visibility"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@id/temp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
                         android:src="@drawable/img_visibility"/>
                     <TextView
                         android:id="@+id/visibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
+                        android:textSize="@dimen/_8sdp"
                         android:textColor="@color/white"
                         tools:text="30C"/>
                 </LinearLayout>
@@ -266,37 +250,32 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/img_rain"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@id/temp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
                         android:src="@drawable/img_rain"/>
                     <TextView
                         android:id="@+id/rain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
+                        android:textSize="@dimen/_8sdp"
                         android:textColor="@color/white"
                         tools:text="30C"/>
                 </LinearLayout>
-
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 
     <ImageButton
         android:id="@+id/take_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@null"
         android:contentDescription="@string/take_photo"
         android:onClick="clickedTakePhoto"
-        android:padding="10dp"
+        android:padding="@dimen/_10sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/photo_selector"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -316,7 +295,7 @@
 
     <SeekBar
         android:id="@+id/zoom_seekbar"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="-60dp"
         android:rotation="270"
@@ -337,9 +316,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:layout_width="50dp"
+        android:layout_width="@dimen/_50sdp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/_16sdp"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@id/take_photo"
         app:layout_constraintEnd_toStartOf="@id/take_photo"
@@ -347,12 +326,12 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/gallery"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/gallery"
             android:onClick="clickedGallery"
-            android:padding="2dp"
+            android:padding="@dimen/_2sdp"
             android:src="@drawable/gallery"
             app:shapeAppearanceOverlay="@style/circleImageView"
             app:strokeColor="@android:color/darker_gray"
@@ -363,16 +342,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/gallery"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:text="sdadgasdgasdgasdgasdgasdg"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@color/white"
-            android:textSize="10sp" />
+            android:textSize="@dimen/_10sdp" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="50dp"
+        android:layout_width="@dimen/_50sdp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:gravity="center_vertical"
@@ -382,8 +361,8 @@
 
         <ImageButton
             android:id="@+id/location"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_centerHorizontal="true"
             android:background="@null"
             android:contentDescription="@string/location"
@@ -396,7 +375,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/location"
             android:layout_centerHorizontal="true"
-            android:textSize="10sp"
+            android:textSize="@dimen/_10sdp"
             android:layout_marginTop="4dp"
             android:maxLines="1"
             android:ellipsize="end"
@@ -408,7 +387,7 @@
         android:id="@+id/layout_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/_16sdp"
         android:weightSum="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -422,7 +401,7 @@
             android:background="@null"
             android:contentDescription="@string/switch_to_front_camera"
             android:onClick="clickedSwitchCamera"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:scaleType="fitCenter"
             android:src="@drawable/switch_camera" />
 
@@ -434,7 +413,7 @@
             android:background="@null"
             android:contentDescription="@string/action_popup"
             android:onClick="clickedPopupSettings"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_popup" />
 
@@ -446,7 +425,7 @@
             android:background="@null"
             android:contentDescription="@string/exposure_lock"
             android:onClick="clickedExposureLock"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:scaleType="fitCenter" />
 
         <ImageButton
@@ -457,33 +436,32 @@
             android:background="@null"
             android:contentDescription="@string/exposure"
             android:onClick="clickedExposure"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_exposure_24" />
 
         <ImageButton
             android:id="@+id/switch_video"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="@string/switch_to_video"
             android:onClick="clickedSwitchVideo"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:scaleType="fitCenter"
             android:src="@drawable/switch_video"
             android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="@string/action_settings"
             android:onClick="clickedSettings"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:scaleType="fitCenter"
             android:src="@drawable/settings"
             android:visibility="gone" />
@@ -491,12 +469,12 @@
 
     <ImageButton
         android:id="@+id/audio_control"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_weight="1"
         android:contentDescription="@string/audio_control_start"
         android:onClick="clickedAudioControl"
-        android:padding="10dp"
+        android:padding="@dimen/_10sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_mic_white_48dp"
         android:visibility="gone"
@@ -507,11 +485,11 @@
     <!-- should be at left-most -->
     <ImageButton
         android:id="@+id/trash"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:contentDescription="@string/trash"
         android:onClick="clickedTrash"
-        android:padding="10dp"
+        android:padding="@dimen/_10sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/trash"
         android:visibility="gone"
@@ -521,11 +499,11 @@
 
     <ImageButton
         android:id="@+id/share"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:contentDescription="@string/share"
         android:onClick="clickedShare"
-        android:padding="10dp"
+        android:padding="@dimen/_10sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/share"
         android:visibility="gone"
@@ -584,18 +562,15 @@
         <ScrollView
             android:id="@+id/hide_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/locker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="33dp" />
+        tools:layout_editor_absoluteX="@dimen/_140sdp"
+        tools:layout_editor_absoluteY="@dimen/_33sdp" />
 
     <ScrollView
         android:id="@+id/popup_container"

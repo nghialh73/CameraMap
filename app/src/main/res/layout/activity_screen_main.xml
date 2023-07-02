@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"/>
 <!--    <ImageButton-->
 <!--        android:id="@+id/swipe_start"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_margin="10dp"-->
+<!--        android:layout_width="100sdp"-->
+<!--        android:layout_height="50sdp"-->
+<!--        android:layout_margin="10sdp"-->
 <!--        android:layout_centerInParent="true"-->
 <!--        android:background="@drawable/buttondownload"-->
 <!--        android:src="@drawable/btn_start_ad"-->

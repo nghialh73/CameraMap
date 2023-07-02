@@ -83,8 +83,10 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -2081,6 +2083,7 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 //ToDo
                 if (response.body() != null) {
+                    List<Hour> hours = response.body().getForecast().getForecastday().get(0).getHour();
                     TextView textTemp = findViewById(R.id.temp);
                     ImageView imgTemp = findViewById(R.id.img_temp);
                     TextView textHumidity = findViewById(R.id.humidity);
@@ -2097,7 +2100,14 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
                     textVisibility.setVisibility(View.VISIBLE);
                     textRain.setVisibility(View.VISIBLE);
                     Current currentForecast = response.body().getCurrent();
-                    Glide.with(HomeActivity.this).load("https:" + currentForecast.getCondition().getIcon()).into(imgTemp);
+                    String currentTime = new SimpleDateFormat("HH").format(new Date());
+                    for (int i = 0; i < hours.size(); i++) {
+                        String hourTime = new SimpleDateFormat("HH").format(new Date(hours.get(i).getTimeEpoch() * 1000));
+                        if (hourTime.equals(currentTime)) {
+                            Glide.with(HomeActivity.this).load("https:" + hours.get(i).getCondition().getIcon()).into(imgTemp);
+                            break;
+                        }
+                    }
                     textTemp.setText(currentForecast.getTempC().toString() + "ºC");
                     textWind.setText(currentForecast.getWindKph().toString() + " Km/h");
                     textHumidity.setText(currentForecast.getHumidity() + " %");
