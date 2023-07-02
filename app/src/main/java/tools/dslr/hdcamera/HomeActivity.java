@@ -1612,7 +1612,7 @@ public class HomeActivity extends AppCompatActivity implements AudioListener.Aud
 
         this.runOnUiThread(new Runnable() {
             public void run() {
-                final ImageButton galleryButton = (ImageButton) findViewById(R.id.gallery);
+                final ShapeableImageView galleryButton = findViewById(R.id.gallery);
                 if (started) {
                     //galleryButton.setColorFilter(0x80ffffff, PorterDuff.Mode.MULTIPLY);
                     if (gallery_save_anim == null) {
